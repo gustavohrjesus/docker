@@ -1,4 +1,4 @@
-#INSTALANDO DOCKER NO LINUX CORP
+# INSTALANDO DOCKER NO LINUX CORP
 Referências:
 [Install Docker Desktop on Linux](https://docs.docker.com/desktop/setup/install/linux/#kvm-virtualization-support)
 [Install Docker Engine on Debian](https://docs.docker.com/engine/install/debian/#install-using-the-repository)
@@ -46,7 +46,7 @@ systemctl enable --now docker docker.socket containerd
 sudo docker run hello-world
 ```
 
-#GERENCIAR DOCKER COM UM USUÁRIO NON-ROOT
+# GERENCIAR DOCKER COM UM USUÁRIO NON-ROOT
 Adicione com o usuário não-root, passando o comando **sudo** no início. Desta forma, funcionou.
 ```
 sudo usermod -aG docker $USER
@@ -59,7 +59,7 @@ $ docker run hell-world
 Hello from Docker! ...
 ```
 
-#COMANDOS DO DOCKER
+# COMANDOS DO DOCKER
 O comando abaixo lista somente os containers rodando
 ``docker ps``
 
@@ -68,7 +68,7 @@ Para ver todos os containers (em execução e executados), use o comando acima c
 
 Os comandos acima evidenciam o id do container, a imagem, entre outras informações.
 
-#SUBINDO UM DOCKER UBUNTU
+# SUBINDO UM DOCKER UBUNTU
 ``docker run ubuntu``
 Após rodar o coma
 ndo, verificamos que é baixada a imagem do docker ubuntu mas, após isso, é fechada a conexão. Verificação esta é feita com o comando **docker ps**. Isto acontece pois não existe nenhum processo em execução dentro deste ubuntu. Então, para deixar o docker ubuntu UP, usamos o comando **-it** para iteragir com o docker e também passamos o termo **bash** para que o processo bash fique em execução dentro deste ubuntu.
@@ -81,13 +81,13 @@ De forma a comprovarmos que quando pararmos nosso docker ubuntu e subí-lo novam
 Deixamos esta imagem rodando em um terminal e em outro, rodamos o comando ``docker ps`` para evidenciar que essa nossa imagem Ubuntu encontra-se em execução.
 Verificamos que quando rodamos o comando ``docker ps``, em **status** temos a informação **Up <qtdTempExecut>**.
 
-#PARANDO UM DOCKER
+# PARANDO UM DOCKER
 De forma a exemplificar, ainda continuaremos utilizando a imagem do Ubuntu.
 Assim, quando rodamos o comando ``docker ps``, este comando exibe dentre as informações, o id deste docker (no nosso exemplo, o id é "ebcbfe70cc0c"). Então, para pararmos este docker (para tudo, inclusive os processos que estão rodando neste container), rodamos o comando abaixo:
 ``docker stop ebcbfe70cc0c``
 Feito isto, no terminal no qual o docker estava rodando, verificamos que saímos do terminal do docker e voltamos para o terminal da nossa máquina.
 
-#SUBINDO O NOSSO DOCKER UBUNTU NOVAMENTE
+# SUBINDO O NOSSO DOCKER UBUNTU NOVAMENTE
 Para isto, rodamos o comando abaixo, apontando o id do nosso container:
 ``docker start ebcbfe70cc0c``
 Assim, rodando o comando ``docker ps``, verificamos que o nosso container está em execução. Porem, não conseguimos interagir com ele.
@@ -97,17 +97,17 @@ Fazendo isto, podemos verificar que voltamos para o **bash** do nosso container.
 
 ####
 
-#VERIFICANDO A VERSÃO DO DOCKER
+# VERIFICANDO A VERSÃO DO DOCKER
 ``docker -v``
 
 ####
 
-#PROBLEMAS COM O DOCKER
-##ERRO 01 -
+# PROBLEMAS COM O DOCKER
+## ERRO 01 -
 Ao tentar subir um arquivo **docker-compose.yml**, através do comando ``docker compose up -d``, obtivermos o erro abaixo:
 > unable to get image 'bitnami/postgresql:latest': permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get "http://%2Fvar%2Frun%2Fdocker.sock/v1.49/images/bitnami/postgresql:latest/json": dial unix /var/run/docker.sock: connect: permission denied
 
-##SOLUÇÃO PARA O ERRO 01:
+## SOLUÇÃO PARA O ERRO 01:
 [How to fix the permission denied error in Docker](https://www.hostinger.com/tutorials/how-to-fix-docker-permission-denied-error?utm_campaign=Generic-Tutorials-DSA|NT:Se|LO:BR-EN&utm_medium=ppc&gad_source=1&gad_campaignid=20990084344&gbraid=0AAAAADMy-hYbQhUOgYMJDy5G12m3tENrT&gclid=EAIaIQobChMIm4ra4uf7jQMV-19IAB3WKiJIEAAYASAAEgIWZvD_BwE)
 O problema acima descrito ocorreu na utilização do terminal dentro do VSCode. Mesmo saindo do terminal, dando **exit**, encerrando a seção do usuário no Linux, abrindo o VSCode novamente, o erro persistia. Como solução foram redigitados novamente os comandos abaixo:
 ```
