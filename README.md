@@ -170,3 +170,4 @@ O comando ``docker ps`` foi utilizado somente para verificar que o usuário non-
 > [Diolinux - O mínimo que você precisa saber sobre Docker!](https://www.youtube.com/watch?v=ntbpIfS44Gw)
 > [Fernanda Kipper - APRENDA DOCKER DO ZERO | TUTORIAL COMPLETO COM DEPLOY](https://www.youtube.com/watch?v=DdoncfOdru8)
 > [RockerSeat - A combinação que todo dev back-end precisa saber (Postgres + Docker)](https://www.youtube.com/watch?v=KlbL-8CEjN0&t=162s)
+> [Prof. Diego Pinho - Postgres e PGAdmin diretamente pelo Docker](https://www.youtube.com/watch?v=CdoBvd_bPdk)
