@@ -70,8 +70,7 @@ Os comandos acima evidenciam o id do container, a imagem, entre outras informaç
 
 # SUBINDO UM DOCKER UBUNTU
 ``docker run ubuntu``
-Após rodar o coma
-ndo, verificamos que é baixada a imagem do docker ubuntu mas, após isso, é fechada a conexão. Verificação esta é feita com o comando **docker ps**. Isto acontece pois não existe nenhum processo em execução dentro deste ubuntu. Então, para deixar o docker ubuntu UP, usamos o comando **-it** para iteragir com o docker e também passamos o termo **bash** para que o processo bash fique em execução dentro deste ubuntu.
+Após rodar o comando, verificamos que é baixada a imagem do docker ubuntu mas, após isso, é fechada a conexão. Verificação esta é feita com o comando **docker ps**. Isto acontece pois não existe nenhum processo em execução dentro deste ubuntu. Então, para deixar o docker ubuntu UP, usamos o comando **-it** para iteragir com o docker e também passamos o termo **bash** para que o processo bash fique em execução dentro deste ubuntu.
 ``docker run -it ubuntu bash``
 
 Verifique que após rodar o comando acima, estaremos logados no terminal do próprio docker (Ubuntu) que subimos (Verifique que o nome do computador, que fica após o root@ não é o mesmo nome do seu computador).
@@ -93,12 +92,59 @@ Para isto, rodamos o comando abaixo, apontando o id do nosso container:
 Assim, rodando o comando ``docker ps``, verificamos que o nosso container está em execução. Porem, não conseguimos interagir com ele.
 Para que consigamos interagir com ele, rodamos o comando abaixo, com a flag **exec**, para executando um comando dentro daquele container, informando que queremos interagir com ele através da flag **-iti**, informando o id do container e com o que gostaríamos de iteragir que, nosso caso, seria o **bash**.
 ``docker exec -iti ebcbfe70cc0c bash``
-Fazendo isto, podemos verificar que voltamos para o **bash** do nosso container. Podemos verificar que é realmente o nosso docker, acessando o diretório **home** do nosso container e listando (comando **ls**) os diretórios dentro dele.
+Fazendo isto, podemos verificar que voltamos para o **bash** do nosso container. Podemos verificar que é realmente o nosso docker, acessando o diretório **home** do nosso container e listando (comando **ls**) os diretórios dentro dele, confirmando que temos o diretório que criamos (**new_dic**).
 
 ####
 
 # VERIFICANDO A VERSÃO DO DOCKER
 ``docker -v``
+
+# BAIXANDO UMA IMAGEM DIRETAMENTE DO DOCKER HUB
+Como exemplo será baixada uma imagem do wordpress. Como não informamos qual a versão que queremos, este comando irá baixar a última versão contida no DockerHub: 
+``docker pull wordpress``
+
+# VERIFICANDO AS IMAGENS EXISTENTES JÁ BAIXADAS
+``docker images``
+
+# SUBINDO UM DOCKER POR LINHA DE COMANDO
+No comando abaixo temos o comando para rodar o container (**docker run**), especificamos o nome para este container (**--name meu_wordpress**), uma porta para este serviço rodar (**-p 8080:80**) e, por fim, qual a imagem que iremos rodar através desta porta (**-d wordpress**)
+``docker run --name mew_wordpress -p 8080:80 -d wordpress``
+
+# APAGANDO UM CONTAINER QUE TEMOS E APAGANDO UMA IMAGEM BAIXADA DO DOCKERHUB
+Para conseguir apagar um container que criamos, primeiramente é necessário pará-lo: ``docker stop ID_DO_CONTAINER``. Feito isto, agora é possível excluir o container passando o id do mesmo:
+``docker rm ID_DO_CONTAINER``
+1. OBS. 01: Com o comando acima apagamos apenas o container que passamos o id. As imagens que baixamos ainda existem na máquina.
+Caso queiramos também excluir a imagem, utilizamos o comando a seguir:
+``docker rmi ID_DA_IMAGEM``
+2. OBS. 02: Caso tenhamos mais containers utilizando uma imagem que queiramos remover, é indicado primeiramente remover os containers que a utilizam e, após isto, remover a imagem utilizando o comando já citado acima. Existe a possibilidade de remover a imagem de modo forçado, mas não é indicado por poder a vir a gerar alguns problemas.
+
+# DOCKER PRUNE - REMOVE TUDO DA MÁQUINA (CONTAINERS E IMAGENS)
+``docker system prune -a``
+
+# CRIANDO UMA REDE INTRANET PARA QUE OS CONTAINERS CONSIGAM ACESSAR UM AO OUTRO
+O comando a seguir cria uma rede chamada **my-network**, do tipo **bridge**. Assim os containers conseguirão conversar entre si.
+``docker network create --driver bridge my-network``
+
+Para verificar a rede criada, use o comando a seguir. Ele exibirá dentre outras, a rede **my-network** que criamos:
+``docker network ls``
+
+# CRIANDO UM CONTAINER POSTGRES COM ACESSO À REDE BRIDGE CRIADA
+``docker run --name my-postgres --network=my-network -p 5433:5432 -e POSTGRES_PASSWORD=postgres -d postgres``
+
+No comando anterior damos o nome ao container de **my-postgres**, tendo este container a porta 5432, a qual é redirecionada para a porta 5433 do host. O atributo **-e** refere-se à **environment** e, através dele, conseguimos definir parâmetros tais como **POSTGRES_PASSWORD** e passar a ela a senha de acesso ao banco.
+
+# INSPECIONAR A REDE INTERNA QUE CRIAMOS NO DOCKER
+Mostra o docker que temos inserido nesta rede: 
+``docker inspect my-network``
+
+# CRIANDO UM CONTAINER MY-PGADMIN COM ACESSO À REDE CRIADA
+O e-mail pode ser qualquer um. A senha **postgres** não foi informada se precisa ser a mesma do postgres.
+``docker run --name my-pgadmin --network=my-network -p 15432:80 -e PGADMIN_DEFAULT_EMAIL=UM_EMAIL_QQUER -e PGADMIN_DEFAULT_PASSWORD=postgres -d dpage/pgadmin4``
+
+Imagem criada, é hora de acessar o container através do navegador do host. Para isto, basta colocar na URL: **localhost:15432**, sendo que definimos a porta 15432 enquanto estávamos configurando o container.
+Assim, caindo na tela de login, devemos colocar o e-mail (*UM_EMAIL_QQUER*) e a senha (*postgres*) que definimos enquanto estávamos configurando o container.
+Então, na tela de **Registro de Servidor**, dentro do pgadmin, vamos passar as informações do container do postgres que criamos. Assim, em **Host name/address**, inserimos o nome do container que criamos o postgres que, no caso, é: **my-postgres**. Após isto, a porta do postgres no nosso container **my-postgres** é a que definimos: **5432**. O *Maintenance database* é o **postgres**. O username é o username que foi criado automaticamente na criação do container: **postgres**. E a senha que definimos: **postgres**. Feito isto, podemos salvar.
+A partir disto temos acesso ao nosso container **my-postgres** através do nosso **my-pgadmin**, no nosso navegador do host.
 
 ####
 
@@ -117,3 +163,10 @@ docker ps
 ```
 
 O comando ``docker ps`` foi utilizado somente para verificar que o usuário non-root conseguia executar. Desta forma, foi obtido êxito.
+
+####
+
+# REFERÊNCIAS
+> [Diolinux - O mínimo que você precisa saber sobre Docker!](https://www.youtube.com/watch?v=ntbpIfS44Gw)
+> [Fernanda Kipper - APRENDA DOCKER DO ZERO | TUTORIAL COMPLETO COM DEPLOY](https://www.youtube.com/watch?v=DdoncfOdru8)
+> [RockerSeat - A combinação que todo dev back-end precisa saber (Postgres + Docker)](https://www.youtube.com/watch?v=KlbL-8CEjN0&t=162s)
