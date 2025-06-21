@@ -91,7 +91,7 @@ Para isto, rodamos o comando abaixo, apontando o id do nosso container:
 ``docker start ebcbfe70cc0c``
 Assim, rodando o comando ``docker ps``, verificamos que o nosso container está em execução. Porem, não conseguimos interagir com ele.
 Para que consigamos interagir com ele, rodamos o comando abaixo, com a flag **exec**, para executando um comando dentro daquele container, informando que queremos interagir com ele através da flag **-iti**, informando o id do container e com o que gostaríamos de iteragir que, nosso caso, seria o **bash**.
-``docker exec -iti ebcbfe70cc0c bash``
+``docker exec -it ebcbfe70cc0c bash``
 Fazendo isto, podemos verificar que voltamos para o **bash** do nosso container. Podemos verificar que é realmente o nosso docker, acessando o diretório **home** do nosso container e listando (comando **ls**) os diretórios dentro dele, confirmando que temos o diretório que criamos (**new_dic**).
 
 ####
@@ -132,6 +132,11 @@ Para verificar a rede criada, use o comando a seguir. Ele exibirá dentre outras
 ``docker run --name my-postgres --network=my-network -p 5433:5432 -e POSTGRES_PASSWORD=postgres -d postgres``
 
 No comando anterior damos o nome ao container de **my-postgres**, tendo este container a porta 5432, a qual é redirecionada para a porta 5433 do host. O atributo **-e** refere-se à **environment** e, através dele, conseguimos definir parâmetros tais como **POSTGRES_PASSWORD** e passar a ela a senha de acesso ao banco.
+
+# ACESSANDO O POSTGRES DENTRO DO CONTAINER
+[Como acessar o postgres de uma imagem docker?](https://pt.stackoverflow.com/questions/413924/como-acessar-o-postgres-de-uma-imagem-docker)
+``docker exec -it my-postgres psql -U postgres``
+Lembrando que o **my-postgres** é o nome que demos ao nosso container e **-U** é para informar qual o nome do usuário que definimos para acesso ao nosso Postgres.
 
 # INSPECIONAR A REDE INTERNA QUE CRIAMOS NO DOCKER
 Mostra o docker que temos inserido nesta rede: 
