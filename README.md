@@ -146,10 +146,16 @@ Mostra o docker que temos inserido nesta rede:
 O e-mail pode ser qualquer um. A senha **postgres** não foi informada se precisa ser a mesma do postgres.
 ``docker run --name my-pgadmin --network=my-network -p 15432:80 -e PGADMIN_DEFAULT_EMAIL=UM_EMAIL_QQUER -e PGADMIN_DEFAULT_PASSWORD=postgres -d dpage/pgadmin4``
 
+No nosso estudo, adotamos como e-mail no **PGADMIN_DEFAULT_EMAIl=gustavo@gmail.com**.
+
 Imagem criada, é hora de acessar o container através do navegador do host. Para isto, basta colocar na URL: **localhost:15432**, sendo que definimos a porta 15432 enquanto estávamos configurando o container.
 Assim, caindo na tela de login, devemos colocar o e-mail (*UM_EMAIL_QQUER*) e a senha (*postgres*) que definimos enquanto estávamos configurando o container.
-Então, na tela de **Registro de Servidor**, dentro do pgadmin, vamos passar as informações do container do postgres que criamos. Assim, em **Host name/address**, inserimos o nome do container que criamos o postgres que, no caso, é: **my-postgres**. Após isto, a porta do postgres no nosso container **my-postgres** é a que definimos: **5432**. O *Maintenance database* é o **postgres**. O username é o username que foi criado automaticamente na criação do container: **postgres**. E a senha que definimos: **postgres**. Feito isto, podemos salvar.
+Então, na tela de **Registro de Servidor** (em *Servers*, clique com o botão direito e selecione **Register->Server**), dentro do pgadmin, vamos passar as informações do container do postgres que criamos. Na aba **General**, no campo **Name**, damos o nome de **docker**. Então, na aba **Connection**, em **Host name/address**, inserimos o nome do container que criamos o postgres que, no caso, é: **my-postgres**. Após isto, a porta do postgres no nosso container **my-postgres** é a que definimos: **5432**. O *Maintenance database* é o **postgres**. O username é o username que foi criado automaticamente na criação do container: **postgres**. E a senha que definimos: **postgres**. Feito isto, podemos salvar.
 A partir disto temos acesso ao nosso container **my-postgres** através do nosso **my-pgadmin**, no nosso navegador do host.
+
+####
+# VOLUMES TEMPORÁRIOS - ONDE ESTÃO
+/var/lib/docker/volumes/7e42e13cda9b0998090be71349856ccc96b58e10648929bfbf26db626ac0eb08/_data# 
 
 ####
 
